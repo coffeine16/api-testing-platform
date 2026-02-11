@@ -3,9 +3,11 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.api_spec import APISpecUpload, APISpecResponse
 from app.services.spec_parser import SpecParser
+from app.orchestrator import Orchestrator
 
 router = APIRouter()
 spec_parser = SpecParser()
+orchestrator = Orchestrator() 
 
 @router.post("/api/specs/upload", response_model=APISpecResponse)
 def upload_api_spec(upload: APISpecUpload):
@@ -35,3 +37,17 @@ def get_spec(spec_id: str):
     if not spec:
         raise HTTPException(status_code=404, detail="Spec not found")
     return spec["parsed_data"]
+
+@router.post("/api/run/{spec_id}")
+def run_agents(spec_id: str):
+    spec = spec_parser.get_spec(spec_id)
+
+    if not spec:
+        return {"error": "Spec not found"}
+
+    result = orchestrator.run_all(spec["parsed_data"])
+
+    return {
+        "status": "completed",
+        "result": result
+    }

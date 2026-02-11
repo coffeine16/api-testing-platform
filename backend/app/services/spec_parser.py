@@ -17,15 +17,17 @@ class SpecParser:
         # Extract endpoints
         endpoints = []
         paths = spec.get("paths", {})
-        
         for path, methods in paths.items():
+            is_id_based = "{" in path and "}" in path
+            
             for method, details in methods.items():
                 if method.upper() in ["GET", "POST", "PUT", "DELETE", "PATCH"]:
                     endpoints.append({
                         "path": path,
                         "method": method.upper(),
                         "summary": details.get("summary", ""),
-                        "parameters": details.get("parameters", [])
+                        "parameters": details.get("parameters", []),
+                        "is_id_based": is_id_based
                     })
         
         return {
