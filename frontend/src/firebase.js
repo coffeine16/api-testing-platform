@@ -13,7 +13,7 @@ import {
 } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyBuMBEhjNeQ7l9i0ySt0tWvqv6AOzavm3g",
+  apiKey:            "Put-in-your-env",
   authDomain:        "api-testing-platform-fdc71.firebaseapp.com",
   projectId:         "api-testing-platform-fdc71",
   storageBucket:     "api-testing-platform-fdc71.firebasestorage.app",
